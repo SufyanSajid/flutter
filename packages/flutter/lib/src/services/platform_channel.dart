@@ -33,7 +33,8 @@ class BasicMessageChannel<T> {
   ///
   /// The [name] and [codec] arguments cannot be null. The default [ServicesBinding.defaultBinaryMessenger]
   /// instance is used if [binaryMessenger] is null.
-  const BasicMessageChannel(this.name, this.codec, { BinaryMessenger? binaryMessenger })
+  const BasicMessageChannel(this.name, this.codec,
+      {BinaryMessenger? binaryMessenger})
       : assert(name != null),
         assert(codec != null),
         _binaryMessenger = binaryMessenger;
@@ -45,7 +46,8 @@ class BasicMessageChannel<T> {
   final MessageCodec<T> codec;
 
   /// The messenger which sends the bytes for this channel, not null.
-  BinaryMessenger get binaryMessenger => _binaryMessenger ?? ServicesBinding.instance!.defaultBinaryMessenger;
+  BinaryMessenger get binaryMessenger =>
+      _binaryMessenger ?? ServicesBinding.instance!.defaultBinaryMessenger;
   final BinaryMessenger? _binaryMessenger;
 
   /// Sends the specified [message] to the platform plugins on this channel.
@@ -53,7 +55,8 @@ class BasicMessageChannel<T> {
   /// Returns a [Future] which completes to the received response, which may
   /// be null.
   Future<T?> send(T message) async {
-    return codec.decodeMessage(await binaryMessenger.send(name, codec.encodeMessage(message)));
+    return codec.decodeMessage(
+        await binaryMessenger.send(name, codec.encodeMessage(message)));
   }
 
   /// Sets a callback for receiving messages from the platform plugins on this
@@ -104,7 +107,9 @@ class MethodChannel {
   ///
   /// The [name] and [codec] arguments cannot be null. The default [ServicesBinding.defaultBinaryMessenger]
   /// instance is used if [binaryMessenger] is null.
-  const MethodChannel(this.name, [this.codec = const StandardMethodCodec(), BinaryMessenger? binaryMessenger ])
+  const MethodChannel(this.name,
+      [this.codec = const StandardMethodCodec(),
+      BinaryMessenger? binaryMessenger])
       : assert(name != null),
         assert(codec != null),
         _binaryMessenger = binaryMessenger;
@@ -118,7 +123,8 @@ class MethodChannel {
   /// The messenger used by this channel to send platform messages.
   ///
   /// The messenger may not be null.
-  BinaryMessenger get binaryMessenger => _binaryMessenger ?? ServicesBinding.instance!.defaultBinaryMessenger;
+  BinaryMessenger get binaryMessenger =>
+      _binaryMessenger ?? ServicesBinding.instance!.defaultBinaryMessenger;
   final BinaryMessenger? _binaryMessenger;
 
   /// Backend implementation of [invokeMethod].
@@ -141,7 +147,8 @@ class MethodChannel {
   /// The `T` type argument is the expected return type. It is treated as
   /// nullable.
   @optionalTypeArgs
-  Future<T?> _invokeMethod<T>(String method, { required bool missingOk, dynamic arguments }) async {
+  Future<T?> _invokeMethod<T>(String method,
+      {required bool missingOk, dynamic arguments}) async {
     assert(method != null);
     final ByteData? result = await binaryMessenger.send(
       name,
@@ -151,7 +158,8 @@ class MethodChannel {
       if (missingOk) {
         return null;
       }
-      throw MissingPluginException('No implementation found for method $method on channel $name');
+      throw MissingPluginException(
+          'No implementation found for method $method on channel $name');
     }
     return codec.decodeEnvelope(result) as T?;
   }
@@ -325,7 +333,7 @@ class MethodChannel {
   ///  * <https://api.flutter.dev/javadoc/io/flutter/plugin/common/MethodCall.html>
   ///    for how to access method call arguments on Android.
   @optionalTypeArgs
-  Future<T?> invokeMethod<T>(String method, [ dynamic arguments ]) {
+  Future<T?> invokeMethod<T>(String method, [dynamic arguments]) {
     return _invokeMethod<T>(method, missingOk: false, arguments: arguments);
   }
 
@@ -338,8 +346,10 @@ class MethodChannel {
   /// See also:
   ///
   ///  * [invokeMethod], which this call delegates to.
-  Future<List<T>?> invokeListMethod<T>(String method, [ dynamic arguments ]) async {
-    final List<dynamic>? result = await invokeMethod<List<dynamic>>(method, arguments);
+  Future<List<T>?> invokeListMethod<T>(String method,
+      [dynamic arguments]) async {
+    final List<dynamic>? result =
+        await invokeMethod<List<dynamic>>(method, arguments);
     return result?.cast<T>();
   }
 
@@ -352,8 +362,10 @@ class MethodChannel {
   /// See also:
   ///
   ///  * [invokeMethod], which this call delegates to.
-  Future<Map<K, V>?> invokeMapMethod<K, V>(String method, [ dynamic arguments ]) async {
-    final Map<dynamic, dynamic>? result = await invokeMethod<Map<dynamic, dynamic>>(method, arguments);
+  Future<Map<K, V>?> invokeMapMethod<K, V>(String method,
+      [dynamic arguments]) async {
+    final Map<dynamic, dynamic>? result =
+        await invokeMethod<Map<dynamic, dynamic>>(method, arguments);
     return result?.cast<K, V>();
   }
 
@@ -371,16 +383,18 @@ class MethodChannel {
   /// completes with a [MissingPluginException], an empty reply is sent
   /// similarly to what happens if no method call handler has been set.
   /// Any other exception results in an error envelope being sent.
-  void setMethodCallHandler(Future<dynamic> Function(MethodCall call)? handler) {
+  void setMethodCallHandler(
+      Future<dynamic> Function(MethodCall call)? handler) {
     binaryMessenger.setMessageHandler(
       name,
       handler == null
-        ? null
-        : (ByteData? message) => _handleAsMethodCall(message, handler),
+          ? null
+          : (ByteData? message) => _handleAsMethodCall(message, handler),
     );
   }
 
-  Future<ByteData?> _handleAsMethodCall(ByteData? message, Future<dynamic> Function(MethodCall call) handler) async {
+  Future<ByteData?> _handleAsMethodCall(ByteData? message,
+      Future<dynamic> Function(MethodCall call) handler) async {
     final MethodCall call = codec.decodeMethodCall(message);
     try {
       return codec.encodeSuccessEnvelope(await handler(call));
@@ -393,7 +407,8 @@ class MethodChannel {
     } on MissingPluginException {
       return null;
     } catch (e) {
-      return codec.encodeErrorEnvelope(code: 'error', message: e.toString(), details: null);
+      return codec.encodeErrorEnvelope(
+          code: 'error', message: e.toString(), details: null);
     }
   }
 
@@ -407,12 +422,15 @@ class MethodChannel {
 /// instead of throwing an exception.
 class OptionalMethodChannel extends MethodChannel {
   /// Creates a [MethodChannel] that ignores missing platform plugins.
-  const OptionalMethodChannel(String name, [MethodCodec codec = const StandardMethodCodec(), BinaryMessenger? binaryMessenger])
-    : super(name, codec, binaryMessenger);
+  const OptionalMethodChannel(String name,
+      [MethodCodec codec = const StandardMethodCodec(),
+      BinaryMessenger? binaryMessenger])
+      : super(name, codec, binaryMessenger);
 
   @override
-  Future<T?> invokeMethod<T>(String method, [ dynamic arguments ]) async {
-    return super._invokeMethod<T>(method, missingOk: true, arguments: arguments);
+  Future<T?> invokeMethod<T>(String method, [dynamic arguments]) async {
+    return super
+        ._invokeMethod<T>(method, missingOk: true, arguments: arguments);
   }
 }
 
@@ -438,7 +456,9 @@ class EventChannel {
   ///
   /// Neither [name] nor [codec] may be null. The default [ServicesBinding.defaultBinaryMessenger]
   /// instance is used if [binaryMessenger] is null.
-  const EventChannel(this.name, [this.codec = const StandardMethodCodec(), BinaryMessenger? binaryMessenger])
+  const EventChannel(this.name,
+      [this.codec = const StandardMethodCodec(),
+      BinaryMessenger? binaryMessenger])
       : assert(name != null),
         assert(codec != null),
         _binaryMessenger = binaryMessenger;
@@ -450,7 +470,8 @@ class EventChannel {
   final MethodCodec codec;
 
   /// The messenger used by this channel to send platform messages, not null.
-  BinaryMessenger get binaryMessenger => _binaryMessenger ?? ServicesBinding.instance!.defaultBinaryMessenger;
+  BinaryMessenger get binaryMessenger =>
+      _binaryMessenger ?? ServicesBinding.instance!.defaultBinaryMessenger;
   final BinaryMessenger? _binaryMessenger;
 
   /// Sets up a broadcast stream for receiving events on this channel.
@@ -466,7 +487,7 @@ class EventChannel {
   /// through the [FlutterError] facility. Stream activation happens only when
   /// stream listener count changes from 0 to 1. Stream deactivation happens
   /// only when stream listener count changes from 1 to 0.
-  Stream<dynamic> receiveBroadcastStream([ dynamic arguments ]) {
+  Stream<dynamic> receiveBroadcastStream([dynamic arguments]) {
     final MethodChannel methodChannel = MethodChannel(name, codec);
     late StreamController<dynamic> controller;
     controller = StreamController<dynamic>.broadcast(onListen: () async {
@@ -489,7 +510,8 @@ class EventChannel {
           exception: exception,
           stack: stack,
           library: 'services library',
-          context: ErrorDescription('while activating platform stream on channel $name'),
+          context: ErrorDescription(
+              'while activating platform stream on channel $name'),
         ));
       }
     }, onCancel: () async {
@@ -501,7 +523,8 @@ class EventChannel {
           exception: exception,
           stack: stack,
           library: 'services library',
-          context: ErrorDescription('while de-activating platform stream on channel $name'),
+          context: ErrorDescription(
+              'while de-activating platform stream on channel $name'),
         ));
       }
     });

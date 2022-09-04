@@ -145,8 +145,14 @@ class ClampingScrollSimulation extends Simulation {
     required this.position,
     required this.velocity,
     this.friction = 0.015,
+<<<<<<< HEAD
     super.tolerance,
   }) : assert(_flingVelocityPenetration(0.0) == _initialVelocityPenetration) {
+=======
+    Tolerance tolerance = Tolerance.defaultTolerance,
+  }) : assert(_flingVelocityPenetration(0.0) == _initialVelocityPenetration),
+       super(tolerance: tolerance) {
+>>>>>>> caae6e02fa5e6553f8f1854caa4a5765340bbc7a
     _duration = _flingDuration(velocity);
     _distance = (velocity * _duration / _initialVelocityPenetration).abs();
   }
@@ -212,13 +218,21 @@ class ClampingScrollSimulation extends Simulation {
 
   @override
   double x(double time) {
+<<<<<<< HEAD
     final double t = clampDouble(time / _duration, 0.0, 1.0);
+=======
+    final double t = (time / _duration).clamp(0.0, 1.0);
+>>>>>>> caae6e02fa5e6553f8f1854caa4a5765340bbc7a
     return position + _distance * _flingDistancePenetration(t) * velocity.sign;
   }
 
   @override
   double dx(double time) {
+<<<<<<< HEAD
     final double t = clampDouble(time / _duration, 0.0, 1.0);
+=======
+    final double t = (time / _duration).clamp(0.0, 1.0);
+>>>>>>> caae6e02fa5e6553f8f1854caa4a5765340bbc7a
     return _distance * _flingVelocityPenetration(t) * velocity.sign / _duration;
   }
 

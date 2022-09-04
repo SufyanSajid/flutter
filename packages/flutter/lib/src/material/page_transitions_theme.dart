@@ -556,15 +556,27 @@ class CupertinoPageTransitionsBuilder extends PageTransitionsBuilder {
 class PageTransitionsTheme with Diagnosticable {
   /// Constructs an object that selects a transition based on the platform.
   ///
+<<<<<<< HEAD
   /// By default the list of builders is: [ZoomPageTransitionsBuilder]
+=======
+  /// By default the list of builders is: [FadeUpwardsPageTransitionsBuilder]
+>>>>>>> caae6e02fa5e6553f8f1854caa4a5765340bbc7a
   /// for [TargetPlatform.android], and [CupertinoPageTransitionsBuilder] for
   /// [TargetPlatform.iOS] and [TargetPlatform.macOS].
   const PageTransitionsTheme({ Map<TargetPlatform, PageTransitionsBuilder> builders = _defaultBuilders }) : _builders = builders;
 
   static const Map<TargetPlatform, PageTransitionsBuilder> _defaultBuilders = <TargetPlatform, PageTransitionsBuilder>{
+<<<<<<< HEAD
     TargetPlatform.android: ZoomPageTransitionsBuilder(),
     TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
     TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+=======
+    TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
+    TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+    TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
+>>>>>>> caae6e02fa5e6553f8f1854caa4a5765340bbc7a
   };
 
   /// The [PageTransitionsBuilder]s supported by this theme.
@@ -589,7 +601,11 @@ class PageTransitionsTheme with Diagnosticable {
     }
 
     final PageTransitionsBuilder matchingBuilder =
+<<<<<<< HEAD
       builders[platform] ?? const ZoomPageTransitionsBuilder();
+=======
+      builders[platform] ?? const FadeUpwardsPageTransitionsBuilder();
+>>>>>>> caae6e02fa5e6553f8f1854caa4a5765340bbc7a
     return matchingBuilder.buildTransitions<T>(route, context, animation, secondaryAnimation, child);
   }
 

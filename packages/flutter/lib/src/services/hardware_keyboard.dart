@@ -939,6 +939,7 @@ class KeyEventManager {
       }
     }
     for (final PhysicalKeyboardKey key in physicalKeysPressed.difference(_rawKeyboard.physicalKeysPressed)) {
+<<<<<<< HEAD
       if (key == physicalKey) {
         // Somehow, a down event is dispatched but the key is absent from
         // keysPressed. Synthesize a up event for the key, but this event must
@@ -957,6 +958,14 @@ class KeyEventManager {
           synthesized: true,
         ));
       }
+=======
+      _keyEventsSinceLastMessage.add(KeyUpEvent(
+        physicalKey: key,
+        logicalKey: _hardwareKeyboard.lookUpLayout(key)!,
+        timeStamp: timeStamp,
+        synthesized: true,
+      ));
+>>>>>>> caae6e02fa5e6553f8f1854caa4a5765340bbc7a
     }
     for (final PhysicalKeyboardKey key in _rawKeyboard.physicalKeysPressed.difference(physicalKeysPressed)) {
       _keyEventsSinceLastMessage.add(KeyDownEvent(

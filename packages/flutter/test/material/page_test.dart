@@ -154,6 +154,7 @@ void main() {
     // Page 1 is back where it started.
     expect(widget1InitialTopLeft == widget1TransientTopLeft, true);
   }, variant: const TargetPlatformVariant(<TargetPlatform>{ TargetPlatform.iOS, TargetPlatform.macOS }));
+<<<<<<< HEAD
 
   testWidgets('test page transition (_ZoomPageTransition)', (WidgetTester tester) async {
     Iterable<T> findWidgets<T extends Widget>(Finder of) {
@@ -228,6 +229,8 @@ void main() {
     expect(find.text('Page 1'), isOnstage);
     expect(find.text('Page 2'), findsNothing);
   }, variant: TargetPlatformVariant.only(TargetPlatform.android));
+=======
+>>>>>>> caae6e02fa5e6553f8f1854caa4a5765340bbc7a
 
   testWidgets('test fullscreen dialog transition', (WidgetTester tester) async {
     await tester.pumpWidget(

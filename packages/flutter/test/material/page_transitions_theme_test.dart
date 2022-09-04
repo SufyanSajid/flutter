@@ -13,6 +13,7 @@ void main() {
     final PageTransitionsTheme theme = Theme.of(tester.element(find.text('home'))).pageTransitionsTheme;
     expect(theme.builders, isNotNull);
     for (final TargetPlatform platform in TargetPlatform.values) {
+<<<<<<< HEAD
       switch (platform) {
         case TargetPlatform.android:
         case TargetPlatform.iOS:
@@ -32,11 +33,17 @@ void main() {
             reason: 'theme builder for $platform is not null',
           );
           break;
+=======
+      if (platform == TargetPlatform.fuchsia) {
+        // No builder on Fuchsia.
+        continue;
+>>>>>>> caae6e02fa5e6553f8f1854caa4a5765340bbc7a
       }
+      expect(theme.builders[platform], isNotNull, reason: 'theme builder for $platform is null');
     }
   });
 
-  testWidgets('Default PageTransitionsTheme builds a CupertinoPageTransition', (WidgetTester tester) async {
+  testWidgets('Default PageTransitionsTheme builds a CupertionPageTransition', (WidgetTester tester) async {
     final Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
       '/': (BuildContext context) => Material(
         child: TextButton(
@@ -92,7 +99,11 @@ void main() {
     await tester.tap(find.text('push'));
     await tester.pumpAndSettle();
     expect(find.text('page b'), findsOneWidget);
+<<<<<<< HEAD
     expect(findZoomPageTransition(), findsOneWidget);
+=======
+    expect(findFadeUpwardsPageTransition(), findsOneWidget);
+>>>>>>> caae6e02fa5e6553f8f1854caa4a5765340bbc7a
   }, variant: TargetPlatformVariant.only(TargetPlatform.android));
 
   testWidgets('PageTransitionsTheme override builds a _OpenUpwardsPageTransition', (WidgetTester tester) async {
@@ -172,7 +183,11 @@ void main() {
     await tester.tap(find.text('push'));
     await tester.pumpAndSettle();
     expect(find.text('page b'), findsOneWidget);
+<<<<<<< HEAD
     expect(findFadeUpwardsPageTransition(), findsOneWidget);
+=======
+    expect(findZoomPageTransition(), findsOneWidget);
+>>>>>>> caae6e02fa5e6553f8f1854caa4a5765340bbc7a
   }, variant: TargetPlatformVariant.only(TargetPlatform.android));
 
   testWidgets('_ZoomPageTransition only cause child widget built once', (WidgetTester tester) async {

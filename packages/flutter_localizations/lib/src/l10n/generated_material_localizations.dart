@@ -34965,6 +34965,7 @@ class MaterialLocalizationTe extends GlobalMaterialLocalizations {
 
   @override
   String get signedInLabel => 'సైన్ ఇన్ చేశారు';
+<<<<<<< HEAD
 
   @override
   String get tabLabelRaw => r'$tabCountలో $tabIndexవ ట్యాబ్';
@@ -35119,6 +35120,8 @@ class MaterialLocalizationTh extends GlobalMaterialLocalizations {
 
   @override
   String get invalidTimeLabel => 'ป้อนเวลาที่ถูกต้อง';
+=======
+>>>>>>> caae6e02fa5e6553f8f1854caa4a5765340bbc7a
 
   @override
   String get keyboardKeyAlt => 'Alt';

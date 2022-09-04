@@ -75,7 +75,10 @@ void main() {
       return false;
     });
     // While ShiftLeft is held (the event of which was skipped), press keyA.
+<<<<<<< HEAD
     // ignore: prefer_const_declarations
+=======
+>>>>>>> caae6e02fa5e6553f8f1854caa4a5765340bbc7a
     final Map<String, dynamic> rawMessage = kIsWeb ? (
       KeyEventSimulator.getKeyData(
         LogicalKeyboardKey.keyA,
